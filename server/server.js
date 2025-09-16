@@ -2,20 +2,19 @@ const winston = require("winston");
 const connectDB = require("./env/db");
 const express = require("express");
 const morgan = require("morgan");
+const cookieparser = require("cookie-parser");
 const cors = require("cors");
-const cookieParser = require("cookie -parser");
 const fileupload = require("express-fileupload");
 const dotenv = require("dotenv");
-const errorHandler = require("./middlewares/error");
-const authRoute = require("./routers/auth-router");
-const supportmailRoute = require("./routes/suportmail-routes");
-const mqttroutes = require("routes/mqttRoutes");
-const bckupdbRoute = require("./routers/backupdb-route");
+const errorHandler = require("./middleware/error");
+const authRoutes = require("./routes/auth-routes");
+const mqttroutes = require("./routes/mqttroutes");
+const supportmailroutes = require("./routes/supportmail-routes");
+const backupdbroutes = require("./routes/backupdbroutes");
+const path = require("path");
 
-//Load environments variables
-dotenv.config({ path: "./.env" });
+//load environment variaables
+dotenv.config({ path: "./.env"});
 
-// Intialize Express
+//Initialize express
 const app = express();
-
-
