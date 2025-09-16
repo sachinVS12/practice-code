@@ -1,7 +1,10 @@
 const winston = require("winston");
-const connectDB = require("./env/db");
+const connectdb = require("./db/env");
 const express = require("express");
 const morgan = require("morgan");
 const cors = require("cors");
-const cookiParser = require("cookie-parser");
+const cookiparser = require('cookie-parser');
+const fileupload = require("express-fileupload");
 const dotenv = require("dotenv");
+
+const app = express()
