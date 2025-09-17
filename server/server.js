@@ -2,31 +2,33 @@ const winston = require("winston");
 const connectdb = require("./env/db");
 const express = require("express");
 const morgan = require("morgan");
-const cookieparser = require("cookie-Parser");
 const cors = require("cors");
+const cookieparser = require("cookie-parser");
 const fileupload = require("express-fileupload");
 const dotenv = require("dotenv");
-const errorHandler = require("./middleware/error");
+const errorHnadler = require("./middleware/error");
 const authroutes = require("./routers/auth-routes");
-const mqttroutes = require("./routers/mqttroutes");
-const supportemailroutes = require("./routers/supportemail-routes");
-const backupdbroutes = require("./routers/backupdbroutes/");
+const mqttroutes = require(".routers/mqttroutes");
+const suppotreamilroutes = require(".routers/supportemail-routes");
+const backupdbroutes = require("./routers/backuproutes");
 
-//load environment variables
-dotenv.config({ path: "./.env"});
+//load envrionment variable
+dotenv.config({ path: "./env./"});
 
-//exprss initiliaze
+//initialize
 const app = express();
 
 //Logger configuration
-const Logger = winston.createLogger({
+const Logger = winston.createlogger({
    level: "info",
    format: winston.format.combine(
-      winston.format.timestamp,
-      winston.format.json
+      winston.format.timestamps(),
+      winston.format.json()
    ),
-   trasports: [
-      new winston.trasports.File({ filename: "eeror.log", level: "error"}),
-      new winston.trasports.File({ filename: 'combined.log'}),
+   tarnsports: [
+      new winston.tarnsports.File({ filename: "error,log", level:"error"}),
+      new winston.tarnsports.File({ filename: "combined.log"}),
    ],
 });
+
+
