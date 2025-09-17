@@ -1,31 +1,32 @@
 const winston = require("winston");
-const connectDB = require("./env/db");
+const connectdb = require("./env/db");
 const express = require("express");
 const morgan = require("morgan");
-const cookieparser = require("cookie-parser");
+const cookieparser = require("cookie-Parser");
 const cors = require("cors");
 const fileupload = require("express-fileupload");
 const dotenv = require("dotenv");
-const errorhandler = require("./middleware/error");
-const authroutes = require("./routers/auth-route");
+const errorHandler = require("./middleware/error");
+const authroutes = require("./routers/auth-routes");
 const mqttroutes = require("./routers/mqttroutes");
-const supportmailroutes = require("./routers/supportmail-routes");
-const backupdb = require('./routes/backup-dbrouters');
+const supportemailroutes = require("./routers/supportemail-routes");
+const backupdbroutes = require("./routers/backupdbroutes/");
 
-//load envirnment variables
-dotenv.config({ path: './.env'});
+//load environment variables
+dotenv.config({ path: "./.env"});
 
-//Initialize express
+//exprss initiliaze
 const app = express();
 
 //Logger configuration
-const logger = winston.createlogger({
-   leve: "info",
+const Logger = winston.createLogger({
+   level: "info",
    format: winston.format.combine(
-      winston.format.timestamp()
+      winston.format.timestamp,
+      winston.format.json
    ),
    trasports: [
-      new winston.transports.File({ filname: "error.log", level:"error"}),
-      new winston.transports.File({ filename: "combined.log"}),
+      new winston.trasports.File({ filename: "eeror.log", level: "error"}),
+      new winston.trasports.File({ filename: 'combined.log'}),
    ],
 });
