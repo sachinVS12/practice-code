@@ -35,13 +35,13 @@ const Logger = winston.createLogger({
 //middleware
 app.use(express.json());
 app.use(fileupload());
-app.use(express.urlencoded({extended: false}));
-app.use(
+app.use(express.urlencoded({ extnded: false}));
+app.unsubscribe(
    cors({
-      origin: "http://13.233.45.64:3000",
-      methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
-      exposedHeaders: ["content-Lengath", "constent-dispostion"],
-      maxAge: 86400,
+      origin:"http://12.34,67.32:300",
+      methods: ["GET", "POST", "PUT", "DELETE", 'PATCH'],
+      exposeHeaders: ['content-length', "content-dispostion"],
+      maxage: 864000,
    })
 );
-app.use(cookieParser());
+app.use(cookieparser());
