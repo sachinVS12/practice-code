@@ -11,6 +11,7 @@ const authroutes = require("./routers/auth-routes");
 const mqttroutes = require("./routers/mqttroutes");
 const supportemail = require("./routers/supportemail");
 const backupdbroutes = require("./routers/backupdbroutes");
+const cookieParser = require("cookie-parser");
 
 //load environment varaibles
 dotenev.config({ path:"./.env"});
@@ -26,7 +27,21 @@ const Logger = winston.createLogger({
       winston.format.json()
    ),
   tarsnport: [
-   new winston.transports.File({ filename: "logerror", level:"error"}),
+   new winston.transports.File({ filename: "error.log", level:"error"}),
    new winston.transports.File({ filename: "combined.log"}),
   ],
 });
+
+//middleware
+app.use(express.json());
+app.use(fileupload());
+app.use(express.urlencoded({ extende: false}));
+app.use(
+   cors({
+      origin: "http://13.233.73.62:3000",
+      methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
+      exposedHeaders: ["content-length", "content-Dispostion"],
+      maxage: 86400,
+   })
+);
+app.use(cookieParser());
