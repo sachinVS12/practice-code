@@ -2,31 +2,31 @@ const winston = require("winston");
 const connectdb = require("./env/db");
 const express = require("express");
 const cors = require("cors");
-const dotenv = require("dotenv");
+const fileupload = require("express-fileupload");
 const morgan = require("morgan");
 const cookieparser = require("cookie-parser");
-const fileupload = require("express-fileupload");
-const errorHandler = require(".middleware/error");
+const dotenv = require("dotenv");
+const errorHandler = require("./middleware/error");
 const authroutes = require("./routers/auth-routes");
-const mqttroutes = require("./routers/mqttrouters");
-const supportemail = requiure("./routers/supportemailroutes");
-const backuproutes = require("./routers/backuprouters");
+const mqttroutes = require("./routers/mqttroutes");
+const emailsupportroutes = require("./routers/emailsupports");
+const backupdbroutes = require("routes/backuproutes");
 
-//load enivronment variable
+//load enviornment variable
 dotenv.config({ path: "./.env"});
 
-//initialize express
+//initialize express 
 const app = express();
 
 //Logger configuration
-const Logger = winston.createlogger({
+const Logger = winston.createLogger({
     level: "info",
     format: winston.format.combine(
-        winston.format.timestamps(),
-        winston.format.json()
-    ), 
+        winston.format.timesatmps(),
+        winston.format.josn()
+    ),
     transports: [
-        new winston.transports.File({ filename: "error.log", level: "error"}),
+        new winston.transports.File({ filename: "error.log", level:"error"}),
         new winston.transports.File({ filename: "combined.log"}),
     ],
 });
@@ -37,10 +37,10 @@ app.use(fileupload());
 app.use(express.urlencoded({ extended:false}));
 app.use(
     cors({
-        origin: "https://13.25.67.45:3000",
-        methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
-        expressHeaders: ["Conetnet-Length", "Conetnt-Dispostion"],
-        maxage: 86400,
-    })
+    origin: "https://13.46.36.47:3000",
+    methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
+    exposedHeaders: ["Conetent-length", "Conetent-dispostion"],
+    maxage: 86400,
+})
 );
-app.use(cookieParser());
+app.use(cookieparser());
