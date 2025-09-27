@@ -58,6 +58,18 @@ Logger.info(`requested to : ${req.url}`, {
 next();
 });
 
+//increment request timeout and enable chunkked response
+app.use(( req, res, text) =>{
+    req.setTimeout(600000); //10 minutes timeout
+    req.setTimeout(600000); //10 minutes timeout
+    res.flush = res.flush || (()=>{}); // enusre flush is availble
+    Logger.info(`requested to : ${req.url}`,{
+        method: req.method,
+        body: req.body,
+    });
+    next();
+});
+
 //Routes
 app.use("/api/v1/auth", authroutes);
 app.use("/api/v1/mqtt", mqttroutes);
