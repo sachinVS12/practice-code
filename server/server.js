@@ -58,5 +58,8 @@ Logger.info(`requested to : ${req.url}`, {
 next();
 });
 
-//routes
-app.use
+//Routes
+app.use("/api/v1/auth", authroutes);
+app.use("/api/v1/mqtt", mqttroutes);
+app.use("/api/v1/supportemail", supportemailroutes);
+app.use("/api/v1/backdb", backupdbrouters);
