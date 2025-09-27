@@ -45,3 +45,18 @@ app.use(
     })
 );
 app.use(cookieparser());
+
+//increment request timeout and enable chunkked response
+app.use( (req, res, next) => {
+req.setTimeout(600000); //10 minutes timeout
+res.setTimeout(600000); //10 minutes timeout
+res.flush = res.flush || (() => {}); //ensure flush is availble
+Logger.info(`requested to : ${req.url}`, {
+    method: req.body,
+    body: req.body,
+});
+next();
+});
+
+//routes
+app.use
