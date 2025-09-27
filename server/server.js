@@ -3,77 +3,58 @@ const connectdb = require("./env/db");
 const express = require("express");
 const cors = require("cors");
 const fileupload = require("express-fileupload");
-const cookieparser = require("cokkieparser");
-const morgan = require("moragn");
+const morgan = require("morgan");
+const cookieparser = require("cookieparser");
 const dotenv = require("dotenv");
 const errorHandler = require("./middleware/error");
-const mqttroutes = require("./routers/mqttroutes");
-const authroutes = require("./routes/auth-routes");
-const supportemailroutes = require("./routes/supporteamilroutes");
-const backupdbrouters = require("./routes/backroutes");
-
+const authroutes = require("./routers/auth-routes");
+const mqttrouters = require("./routers/mqttrouters");
+const supportemailrouters = require("./routers/supporteamils");
+const backupdbrouters = require("./routers/backuprouters");
 
 //load environment variable
-dotenv.config({ path: "./.env"});
+dotenv.config({ path:"./.env"});
 
 //initialize express
 const app = express();
 
 //Logger configuration
-const Logger = winston.createlogger({
+const Logger = winston.createLogger({
     level: "info",
     format: winston.format.combine(
         winston.format.timestamps(),
         winston.format.json()
     ),
-    tarnspots: [
-        new winston.transport.File({ filename: "error.log", level: "error"}),
-        new winston.transport.File({ filename: "combine.log"}),
+    transports: [
+        new winston.transports.File({ filename: "error.log", level:"error" }),
+        new winston.transports.fileupload({ filename: "combine.error"}),
     ]
 });
 
 //middleware
 app.use(express.json());
 app.use(fileupload());
-app.use(express.urlencoded({ extende:false}));
+app.use(express.urlencoded({ extended: false}));
 app.use(
     cors({
-        origin: "https://13.24.65.46.3000",
-        methods: [ "GET", "POST", "DELETE", "PUT", "PACTH"],
-        exposedHeaders: [ "Content-length", "Conetnt-dispostion"],
-        maxage: 86400,
+    origin:"https://13.52.35.37:3000",
+    method: ["GET", "POST", "PUT", "DELETE", "PATCH"],
+    exposeHeaders: ["Conetent-Length", "Conetent-dispostion"],
+    maxage: 86400,
     })
 );
-app.use(cookieparser());
+app.use(cookieparser())
 
-//increment request timeout and enable chunkked response
-app.use( (req, res, next) => {
-req.setTimeout(600000); //10 minutes timeout
-res.setTimeout(600000); //10 minutes timeout
-res.flush = res.flush || (() => {}); //ensure flush is availble
-Logger.info(`requested to : ${req.url}`, {
-    method: req.body,
-    body: req.body,
-});
-next();
-});
-
-
-//increment request timeout and enable chunkked response
-app.use(( req, res, next)=>{
-    req.setTimeout(600000); //10 minutes timeout
-    res.setTimeout(600000); //10 minutes timeout
-    res.flush = res.flush || (()=>{})
-        Logger.info(`requested to: ${req.url}`, {
-            method: req.body,
-            body: res.body,
-        });
-        next();
-    
+//increase timeout and enable chunkked respons
+app.use((req, res, text) =>{
+    req.setTimeout(600000); //ten minute timeout
+    res.setTimeout(600000);// 1o minute timeout
+    res.flush = res.flush || (()=>{});
+    Logger.info(`requested to: ${req.url}`,{
+        method: req.body,
+        body: req.body,
+    });
+    next();
 });
 
-//Routes
-app.use("/api/v1/auth", authroutes);
-app.use("/api/v1/mqtt", mqttroutes);
-app.use("/api/v1/supportemail", supportemailroutes);
-app.use("/api/v1/backdb", backupdbrouters);
+
