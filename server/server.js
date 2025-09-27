@@ -57,4 +57,5 @@ app.use((req, res, text) =>{
     next();
 });
 
-
+//router
+app.use("./api/vi?auth", authroutes);
