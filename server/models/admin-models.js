@@ -22,5 +22,14 @@ const adminSchema = new mongoose.Schema(
             select: false,
             required: [true, "password is required"],
         },
+        role: {
+            type: String,
+            default: "admin",
+        },
+    },
+    {
+        timesatmps: true,
+        toJSON: { virtuals: true },
+        toObject: { virtuals: true}
     }
-)
+);
