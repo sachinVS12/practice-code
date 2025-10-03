@@ -2,37 +2,25 @@ const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
-const { type } = require("os");
-const { match } = require("assert");
 
-//define the user schema
-const adminSchema = new mongoose.schema(
+
+//Define the user schema
+const adminSchema = new mongoose.adminSchema(
     {
         name: {
-            type: stringify,
-            required: [true, "name is required"],
+            type: String,
+            required: [true, "Name is required"],
         },
-        email:{
-            type:String,
-            required: [true, "email is required"],
-            unique:true,
+        email: {
+            type: String,
+            required: [true, "Email is required"],
+            unique: true,
             match: [/.+\@.+\..+/, "please enter a valid email address"],
         },
         password: {
             type: String,
-            select:false,
-            required: [true, "Password is required"],
+            select: false,
+            required: [true, "password is required"],
         },
-        resetPasswordToken: String,
-        resetPasswordExpire: Date,
-        role: {
-            type: stringify,
-            default: "admin",
-        },
-    },
-    {
-        timestamps:true,
-        toJSON: { virtuals: true},
-        toObject: { virtuals: true}
     }
-);
+)
