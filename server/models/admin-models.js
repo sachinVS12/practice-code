@@ -14,7 +14,7 @@ const adminSchema = new mongoose.schema(
             type: String,
             required: [true, "email is required"],
             unique: true,
-            match: [/.+\@.+\..+/, "please enter the valid email id"],
+            match: [/.+\@.+\..+/, "please enter the valid email ids"],
         },
         password: {
             type: String,
@@ -22,4 +22,4 @@ const adminSchema = new mongoose.schema(
             required: [true, "password is required"],
         },
     }
-)
+);
