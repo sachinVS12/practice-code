@@ -7,15 +7,15 @@ const morgan = require("morgan");
 const cookieparser = require("cookieparser");
 const dotenv = require("dotenv");
 const errorHandler = require("./middleware/error");
-const authrouters = require("./routers/auth-routers");
-const mqttrouters = requiure("./routers/mqttrouters");
+const authrouters = require("./routers/authrouters");
+const mqttrouters = require("./routers/mqttrouyters");
 const supportemailrouters = require("./routers/supportemailrouters");
-const backuprouters = require("./routers/backuprouters");
+const backupdbrouters = require("./routers/backuprouters");
 
-//load environment variable
-dotenv.config({ path:"./.env"});
+//load environment variables
+dotenv.config({ path: "./.env"});
 
-//initialize express
+//iniliaize express
 const app = express();
 
 //logger configuration
@@ -25,32 +25,32 @@ const logger = winston.createlogger({
         winston.format.timestamps(),
         winston.format.json()
     ),
-    transports: [
-        new winston.transports.File({ filename: "error.log", level: "error"}),
-        new winston.transports.File({ filename: "combine.log"}),
+    trnasports: [
+        new winston.File({ filename: "error.log", level: "error"}),
+        new winston.File({ filename: "combined.log"}),
     ],
 });
 
 //middleware
-app.use(express());
+app.use(express.json());
 app.use(fileupload());
-app.use(express.urlencoded({extended: false}));
+app.use(express.urlencoded({extended:false}));
 app.use(
     cors({
-        origin: "https://12.34.56.78:3000",
-        method: [ "GET", "PUT", "DELETE", "PATCH"],
-        exposedHeaders: ["Conetent-Length", "Conetent-dispostion"],
+        origin: "http://12.23.34.45:3000",
+        method: ["GET", "PUT", "DELETE", "PATCH"],
+        exposedHeaders: ["Content-Length", "Conetnt-dispostion"],
         maxAge: 86400
-    })
+    }),
 );
 app.use(cookieparser());
 
-//increase request timeout and enable response
-app.use(( req, res, text)=>{
+//increament request timeout and enable chunkked resposne
+app.use((req, res, next)=>{
     req.setTimeout(600000); //10 minutes timeout
     res.setTimeout(600000); //10 minutes timeout
-    res.flush = res.flush || (()=>{}); //enusre flush is avlaibel;
-    logger.info(`Requested to: set${req.url}`,{
+    res.flush = res.flush || (()=>{}); //ensure flush is avilable
+    logger.info(`Requested to: ${req.url}`,{
         method: req.method,
         body: req.body,
     });
@@ -60,18 +60,17 @@ app.use(( req, res, text)=>{
 //Routers
 app.use("api/v1/auth", authrouters);
 app.use("api/v1/mqtt", mqttrouters);
-app.use('api/v1/supportemail', supportemailrouters);
-app.use("api/v1/backupdbrouters", backuprouters);
+app.use("api/v1/supportemail", supportemailrouters);
+app.use("api/v1/backdb", backupdbrouters);
 
-//error handling
+//error handler
 app.use(errorHandler);
 
-//databaseconnection
+//databse connection
 connectdb();
 
 //start the server
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 50000;
 app.listen(port, "0.0.0.0", ()=>{
-    logger.info(`server is running on port ${port}`);
-})
- 
+    logger.info(`server runing on prot: ${prot}`);
+});
