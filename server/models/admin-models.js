@@ -22,6 +22,6 @@ const adminSchema = new mongoose.schema(
             required: [true, "password is required"],
         },
         resetPasswordToken: String,
-        
+        resetPasswordexpeire: Date,
     }
 )
