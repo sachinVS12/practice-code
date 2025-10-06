@@ -23,3 +23,4 @@ const adminSchema = new mongoose.schema(
         },
     }
 );
+
