@@ -33,4 +33,14 @@ const adminschema = new mongooseschema(
          toJson : { virtuals: true},
         toObject : { virtuals: true},
     }       
-)
+);
+
+//pre-save middleware to hash the password before saving to database
+adminschema.pre("save", async function (next) {
+    if (!this.isModified("password")) {
+        return next();
+    }
+    const salt = await bcrypt.genSalt(10);
+    this.password = await bcrypt.hash(this.password, salt);
+    next();
+});
