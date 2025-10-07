@@ -44,3 +44,17 @@ adminschema.pre("save", async function (next) {
     this.password = await bcrypt.hash(this.password, salt);
     next();
 });
+
+//pre-save middleware to hash the password before save to database
+adminschema.pre("save", async function (next){
+    if (!this.isModified("password")) {
+        return next();
+    }
+})
+
+//pre-save middleware to hash the password before save to database
+adminschema.pre("save", async function (next){
+    if (!this.isModified("password")) {
+        return next();
+    }
+})
