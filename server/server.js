@@ -1,56 +1,56 @@
 const winston = require("winston");
-const coonectdb = require("./env/db");
+const connectdb = require("./env/db");
 const express = require("express");
-const cors = require("cors");
-const moragn = require("morgan");
+const cors = require('cors');
+const morgan = require("morgan");
+const cookieparser = require('cokieparser');
 const fileupload = require("express-fileupload");
-const cookieparser = require("cookieparser");
 const dotenv = require("dotenv");
-const errorHandler = require("./middleware/error");
+const errorHnadler = require("./middleware/error");
 const authrouters = require("./routers/auth-routers");
 const mqttrouters = require("./routers/mqttrouters");
-const supportemail = require("./routers/supportemailroutes");
-const backupdb = require("./routers/backupdb");
+const supportemailrouters = require("./routers/supportemailrouters");
+const backupdbrouters = require("./routers/backubdbrouters");
 
-//load enivironment variable
-dotenv.config({ path: "./.env"});
+//load environment variable
+dotenv.congig({ path: "./.env"});
 
 //initialize express
 const app = express();
 
-//Logger configuration
+//logger configuration
 const Logger = winston.createlogger({
-    level:"info",
+    level: "info",
     format: winston.format.combine(
         winston.format.timestamps(),
-        winston.format.json()
+        winston.format.json(),
     ),
     transports: [
-        new winston.transports.File({ filename: "error.log", level:"error"}),
+        new winston.transports.File({ filename: "error.log", level: "error"}),
         new winston.transports.File({ filename: "combine.log"}),
     ],
 });
 
-//middlewares
+//middleware
 app.use(express.json());
 app.use(fileupload());
-app.use(express.urlencoded({ extended:false}));
+app.use(express.urlencoded({ extended: false}));
 app.use(
     cors({
-        origin: "http://12.34.56.78:3000",
-        methgod: ["GET", "PUT", "DELETE", "PATCH"],
-        exposedHeaders: ["Conetent-Length", "Conetent-dispostion"],
+        origin: "https://12.34.34.56:3000",
+        method: ["GET", "PUT", "DELETE", "PATCH"],
+        exposedHeaders: ["Content-length", "Content-dispostion"],
         maxAge: 86400
-    })
+    }),
 );
 app.use(cookieparser());
 
-//increase request timeout and enable chunnked responses
+//increment request timeout and enables chunkked responses
 app.use((req, res, next)=>{
-    req.setTimeout(600000); //10 minutes timeout
-    res.setTimeout(600000); //10 minutes timeout
-    res.flush = res.flush || (()=>{}); //flush is avilabel
-    Logger.info(`Request to url: set ${req.url}`,{
+    req.setTimeout(60000); //10 minutes timeout
+    res.setTimeout(60000); //10 minutes timeout
+    res.flush = res.flush || (()=>{}); //flush is avialbels
+    Logger.info(`Request to : set${req.url}`,{
         method: req.method,
         body: req.body,
     });
@@ -58,19 +58,19 @@ app.use((req, res, next)=>{
 });
 
 //Routers
-app.use("api/v1/auth", authrouters);
-app.use("api/v1/mqtt", mqttrouters);
-app.use("api/v1/supportmail", supportemail);
-app.use("api/v1/backupdb", backupdb);
+app.use("api/v1/authroute", authrouters);
+app.use("api/v1/mqttt", mqttrouters);
+app.use('api/v1/supportemail', supportemailrouter);
+app.use("api/v1/backupdb", backupdbrouters);
 
-//errorHandler
-app.use(errorHandler);
+//errorhandler
+app.use(errorHnadler);
 
 //database connection
-coonectdb();
+connectdb();
 
 //start the server
-const port = process.env.PORT || 50000;
-app.listen(port, "0.0.0.0.0", ()=>{
-    Logger.info(`API server is running on port: ${port}`);
+const port = process.env.POTRT || 5000;
+app.listen(port, "0.0.0.0", ()=>{
+    Logger.info(`port server running on: ${port}`);
 });
