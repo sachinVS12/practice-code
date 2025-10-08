@@ -57,8 +57,16 @@ adminschema.methods.getToken = function (){
 };
 
 
+//method to verify the user entered password with the existing password in the dtabase
+adminschema.methods.verifypass = async function (enteredPassword) {
+    return await bcrypt.compare(enteredPassword);
+};
 
+//cretae the user model from the schema
+const Admin = mongoose.model("Admin", adminschema);
 
+// Export the user model
+module.exports = Admin;
 
 
 
