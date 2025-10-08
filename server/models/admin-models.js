@@ -45,7 +45,16 @@ adminschema.pre("save", async function(next) {
     this.password = await bcrypt.hash(this.password, salt);
 });
 
-
+// method to generate the jwt token for the loggedin or signedup users
+adminschema.methods.getToken = function (){
+    return jwt.sign(
+        { id: this._id, name: this.name, email: this.email, role: this.role},
+        process.env.JWT_SECRET,
+        {
+            expiresIn: '3d',
+        }
+    );
+};
 
 
 
