@@ -1,32 +1,32 @@
 const winston = require("winston");
 const connectdb = require("./env/db");
 const express = require("express");
-const cors = require('cors');
+const cors = require("cors");
 const morgan = require("morgan");
-const cookieparser = require('cokieparser');
 const fileupload = require("express-fileupload");
+const cookieparser = require("cookieparser");
 const dotenv = require("dotenv");
-const errorHnadler = require("./middleware/error");
-const authrouters = require("./routers/auth-routers");
+const errorHnadlers = require("./middleware/error");
+const authrouter = require("./routers/authrouters");
 const mqttrouters = require("./routers/mqttrouters");
 const supportemailrouters = require("./routers/supportemailrouters");
-const backupdbrouters = require("./routers/backubdbrouters");
+const backupdbrouters = require("./routers/backupdbrouters");
 
-//load environment variable
-dotenv.congig({ path: "./.env"});
+//load environment vaiable
+dotenv.config({ path: "./.env"});
 
 //initialize express
 const app = express();
 
 //logger configuration
-const Logger = winston.createlogger({
+const logger = winston.createlogger({
     level: "info",
     format: winston.format.combine(
         winston.format.timestamps(),
-        winston.format.json(),
+        winston.format.json()
     ),
     transports: [
-        new winston.transports.File({ filename: "error.log", level: "error"}),
+        new winston.transports.File({ filename: "error.log", level:"error"}),
         new winston.transports.File({ filename: "combine.log"}),
     ],
 });
@@ -34,43 +34,43 @@ const Logger = winston.createlogger({
 //middleware
 app.use(express.json());
 app.use(fileupload());
-app.use(express.urlencoded({ extended: false}));
+app.use(express.urlencoded({extended:false}));
 app.use(
     cors({
-        origin: "https://12.34.34.56:3000",
+        origin: "http://13.43.45.45:3000",
         method: ["GET", "PUT", "DELETE", "PATCH"],
-        exposedHeaders: ["Content-length", "Content-dispostion"],
+        exposedHeaders: ["Content-Length", "Conetnt-dispostion"],
         maxAge: 86400
     }),
 );
 app.use(cookieparser());
 
-//increment request timeout and enables chunkked responses
+//increase request timeout and enable chunkked resposnse
 app.use((req, res, next)=>{
     req.setTimeout(60000); //10 minutes timeout
     res.setTimeout(60000); //10 minutes timeout
-    res.flush = res.flush || (()=>{}); //flush is avialbels
-    Logger.info(`Request to : set${req.url}`,{
+    res.flush = res.flush || (()=>{}); //flush is availble
+    logger.info(`requested to : ${req.url}`,{
         method: req.method,
-        body: req.body,
+        body: req. body
     });
     next();
 });
 
-//Routers
-app.use("api/v1/authroute", authrouters);
-app.use("api/v1/mqttt", mqttrouters);
-app.use('api/v1/supportemail', supportemailrouter);
+//routers
+app.use("api/v1/auth". authrouter);
+app.use("api/v1/mqtt", mqttrouters);
+app.use("api/v1/supportemail", supportemailrouters);
 app.use("api/v1/backupdb", backupdbrouters);
 
-//errorhandler
+//errorHnadler
 app.use(errorHnadler);
 
 //database connection
 connectdb();
 
 //start the server
-const port = process.env.POTRT || 5000;
+const port = process.env.PORT || 5000;
 app.listen(port, "0.0.0.0", ()=>{
-    Logger.info(`port server running on: ${port}`);
+  logger.info(`server is running on port ${port}`);
 });
