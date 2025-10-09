@@ -8,70 +8,32 @@ const { type } = require("os");
 const adminschema = new mongooseschema(
     {
         name: {
-            tyep: String,
+            type: String,
             required: [true, "name is required"],
         },
         email: {
             type: String,
             required: [true, "email is required"],
             unique: true,
-            match: [/.+\@.+\..+/, "Enter the valid email id"],
+            match: [/.+\@.+\..+/, "enter valid email id"],
         },
         password: {
             type: String,
-            required: [true, "Password is required"],
             select: false,
+            required: [true, "password is require"],
         },
-        resetpasswordtoken:String,
-        resetpasswordexpier:Date,
         role: {
             type: String,
-            default: "admin",
-        },
+            default: "Admin",
+        }
     },
-    {
-       timestamps: true,
-       toObject : { virutals: true},
-       toJson: { virtuals: true},
-    }
 );
 
-//pre-save middleware to hash the password before store database connection
-adminschema.pre("save", async function(next) {
+//pre-save middleware to hash the password to before store the database
+adminschema.pre("save", async function (next){
     if(!this.ismodefied("password")) {
         return next();
     }
-    const salt = await bcrypt.genSalt(10);
-    this.password = await bcrypt.hash(this.password, salt);
+    const salt = await bcrypt.gensalt(10);
+    this.password = await bcrypt.hash(this.paasword, salt);
 });
-
-// method to generate the jwt token for the loggedin or signedup users
-adminschema.methods.getToken = function (){
-    return jwt.sign(
-        { id: this._id, name: this.name, email: this.email, role: this.role},
-        process.env.JWT_SECRET,
-        {
-            expiresIn: '3d',
-        }
-    );
-};
-
-
-//method to verify the user entered password with the existing password in the dtabase
-adminschema.methods.verifypass = async function (enteredPassword) {
-    return await bcrypt.compare(enteredPassword);
-};
-
-//cretae the user model from the schema
-const Admin = mongoose.model("Admin", adminschema);
-
-// Export the user model
-module.exports = Admin;
-
-
-
-
-
-
-
-
