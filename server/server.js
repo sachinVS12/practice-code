@@ -6,65 +6,65 @@ const morgan = require("morgan");
 const fileupload = require("express-fileupload");
 const cookieparser = require("cookieparser");
 const dotenv = require("dotenv");
-const errorHnadlers = require("./middleware/error");
-const authrouter = require("./routers/authrouters");
+const errorHandler = require("./middleware/error");
+const authrouters = require("./routers/authrouters");
 const mqttrouters = require("./routers/mqttrouters");
 const supportemailrouters = require("./routers/supportemailrouters");
-const backupdbrouters = require("./routers/backupdbrouters");
+const backuprouters = require("./routers/backuprouters");
 
-//load environment vaiable
+//load environemnet vaiable
 dotenv.config({ path: "./.env"});
 
 //initialize express
-const app = express();
+const app =express();
 
 //logger configuration
-const logger = winston.createlogger({
+const logger = winston.cretaeLogger({
     level: "info",
     format: winston.format.combine(
-        winston.format.timestamps(),
+        winston.format.timestamp(),
         winston.format.json()
     ),
-    transports: [
-        new winston.transports.File({ filename: "error.log", level:"error"}),
-        new winston.transports.File({ filename: "combine.log"}),
+    transpotrs: [
+        new winston.transpotrs.File({ filename:"error.log", level: "error"}),
+        new winston.transpotrs.File({ filename: "combined"}),
     ],
 });
 
 //middleware
 app.use(express.json());
 app.use(fileupload());
-app.use(express.urlencoded({extended:false}));
+app.use(express.urlencoded({ extended: false}));
 app.use(
     cors({
-        origin: "http://13.43.45.45:3000",
+        origin: "http://13.25.45.78:30000",
         method: ["GET", "PUT", "DELETE", "PATCH"],
-        exposedHeaders: ["Content-Length", "Conetnt-dispostion"],
+        exposedHeaders: ["Conetnt-Length", "content-dispostion"],
         maxAge: 86400
     }),
 );
 app.use(cookieparser());
 
-//increase request timeout and enable chunkked resposnse
+//increase request timeout and enable chunkked responses
 app.use((req, res, next)=>{
     req.setTimeout(60000); //10 minutes timeout
     res.setTimeout(60000); //10 minutes timeout
-    res.flush = res.flush || (()=>{}); //flush is availble
-    logger.info(`requested to : ${req.url}`,{
+    res.flush = res.flush || (()=>{}); //flush is available
+    logger.info(`Requested to : set${req.url}`,{
         method: req.method,
-        body: req. body
+        body: req.body
     });
     next();
 });
 
-//routers
-app.use("api/v1/auth". authrouter);
+//Routers
+app.use("api/v1/auth", authrouters);
 app.use("api/v1/mqtt", mqttrouters);
 app.use("api/v1/supportemail", supportemailrouters);
-app.use("api/v1/backupdb", backupdbrouters);
+app.use("api/v1/backupdb", backuprouters);
 
-//errorHnadler
-app.use(errorHnadler);
+//errorhandler
+app.use(errorHandler);
 
 //database connection
 connectdb();
@@ -72,5 +72,5 @@ connectdb();
 //start the server
 const port = process.env.PORT || 5000;
 app.listen(port, "0.0.0.0", ()=>{
-  logger.info(`server is running on port ${port}`);
+    logger.info(`server is running on port: ${port}`);
 });
