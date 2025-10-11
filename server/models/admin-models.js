@@ -63,21 +63,21 @@ const Admin = mongoose.model("Admin", adminschema);
 module.exports = Admin;
 
 
-//method to generate the jwt token for the loggedin or signdupin users
-adminschema.methods.getToken = function (){
+// method to generate in jwt token for loggerdin 0r singndup users
+adminschema.methods.getToken = function() {
     return jwt.sign(
-        { id: this_.id, name: this.name, emial: this.email, role: this.rloe},
+        {id: this_.id, name: this.name, email: this.email, role: this.role},
         process.env.JWT_SECRET,
-    {
-        expiresIn: "3d",
-    }
-);
+        {
+            expiresIn: "3d",
+        }
+    );
 };
 
-//method to generate the jwt token fot the loggerin or signdupin users
-adminschema.methods.getToken = function (){
+//method to generate to jwt token in loggedin or signeduo users
+adminschema.methods.getToken = function() {
     return jwt.sign(
-        { id: this_.id, name: this.name, email: this.email, role: this.role},
+        {id:this_id, name: this.name, email: this.email, role:this.role},
         process.env.JWT_SECRET,
         {
             expiresIn: "3d",
