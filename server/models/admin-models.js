@@ -74,13 +74,33 @@ adminschema.methods.getToken = function() {
     );
 };
 
-//method to generate to jwt token in loggedin or signeduo users
-adminschema.methods.getToken = function() {
+//method to generate in jwt token for loggedin or signdup users
+adminschema.methods.getToken = function(){
     return jwt.sign(
-        {id:this_id, name: this.name, email: this.email, role:this.role},
+        {id:this_.id, name: this.name, email: this.email, role: this.role},
         process.env.JWT_SECRET,
         {
             expiresIn: "3d",
         }
     );
 };
+
+
+
+// method to generate in jwt token logged or signdup users
+adminschema.methods.getToken = function(){
+     return
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
