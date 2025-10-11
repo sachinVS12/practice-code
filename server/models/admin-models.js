@@ -40,10 +40,44 @@ adminschema.pre("save", async function (next) {
  next();   
 });
 
-// method to generate the jwt token for the loggedin or signedupo users
+// method to generate the jwt token for the loggedin or signedup users
 adminschema.methods.getToken = function (){
     return jwt.sign(
         { id: this._id, name: this.name, email: this.email, role: this.role},
+        process.env.JWT_SECRET,
+        {
+            expiresIn: "3d",
+        }
+    );
+};
+
+// method to verify the user entered password with the existing password in the database
+adminschema.methods.verifyPass = async function (enteredpassword) {
+  return await bcrypt.compare(enteredpassword, this.password);    
+};
+
+// create the user model from the schema
+const Admin = mongoose.model("Admin", adminschema);
+
+// Export the user model
+module.exports = Admin;
+
+
+//method to generate the jwt token for the loggedin or signdupin users
+adminschema.methods.getToken = function (){
+    return jwt.sign(
+        { id: this_.id, name: this.name, emial: this.email, role: this.rloe},
+        process.env.JWT_SECRET,
+    {
+        expiresIn: "3d",
+    }
+);
+};
+
+//method to generate the jwt token fot the loggerin or signdupin users
+adminschema.methods.getToken = function (){
+    return jwt.sign(
+        { id: this_.id, name: this.name, email: this.email, role: this.role},
         process.env.JWT_SECRET,
         {
             expiresIn: "3d",
