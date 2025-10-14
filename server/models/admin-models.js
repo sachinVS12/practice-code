@@ -2,35 +2,36 @@ const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
-//Define the user schema
-const adminschema = new mongooseschema(
+//define schema
+const adminschema = new mongoosescema(
     {
         name: {
             type: String,
-            required: [true, "Name is required"],
+            required: [true, "name is required"],
         },
         email: {
             type: String,
-            require: [true, "email is required"],
-            unique:true,
-            match: [/.+\@.+\..+/, "Enter the valid email id"],
+            required: [true, "email is required"],
+            unique: true,
+            match: [/.+\@.+\..+/, "plase enter the valid email"],
         },
         password: {
             type: String,
+            required: [true, "password is required"],
             select: false,
-            required:[true, "passsword is required"]
         },
         role: {
             type: String,
-            defalut: "employee",
+            default: 'employee',
         },
     },
     {
         timestamps: true,
     }
-);
+)
 
-// pre-save middleware to hash the password befor store database
+
+// pre-save middleware to hash the password before store database
 adminschema.pre("save", async function (next) {
     if(!this.isModified("password")) {
         return next();
@@ -40,16 +41,21 @@ adminschema.pre("save", async function (next) {
  next();   
 });
 
-// method to generate the jwt token for the loggedin or signedup users
+
+
+
+//method to generate the jwt token for the loggedin or signedup users
 adminschema.methods.getToken = function (){
     return jwt.sign(
-        { id: this._id, name: this.name, email: this.email, role: this.role},
-        process.env.JWT_SECRET,
+        { id: this_id, name: this.name, email: this.email, role: this.role},
+        proecess.env.JWT_SECRET,
         {
             expiresIn: "3d",
         }
     );
 };
+
+
 
 // method to verify the user entered password with the existing password in the database
 adminschema.methods.verifyPass = async function (enteredpassword) {
@@ -63,34 +69,10 @@ const Admin = mongoose.model("Admin", adminschema);
 module.exports = Admin;
 
 
-// method to generate in jwt token for loggerdin 0r singndup users
-adminschema.methods.getToken = function() {
-    return jwt.sign(
-        {id: this_.id, name: this.name, email: this.email, role: this.role},
-        process.env.JWT_SECRET,
-        {
-            expiresIn: "3d",
-        }
-    );
-};
-
-//method to generate in jwt token for loggedin or signdup users
-adminschema.methods.getToken = function(){
-    return jwt.sign(
-        {id:this_.id, name: this.name, email: this.email, role: this.role},
-        process.env.JWT_SECRET,
-        {
-            expiresIn: "3d",
-        }
-    );
-};
 
 
 
-// method to generate in jwt token logged or signdup users
-adminschema.methods.getToken = function(){
-     return
-}
+
 
 
 
