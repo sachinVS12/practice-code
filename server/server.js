@@ -62,3 +62,15 @@ app.use("api/v1/auth", authroutersrouters);
 app.use("api/v1/mqtt", mqttrouters);
 app.use('api/v1/supportemail', supportemailrouters);
 app.use("api/v1/backupdb", backupdbrouters);
+
+//errorhandler
+app.use(errorHnadler);
+
+//database connection
+connectdb();
+
+//start the server
+const port = process.env.PORT || 5000;
+app.listen(port, "0.0.0.0", ()=>{
+    logger.info(`server is running on port: ${port}`);
+});
