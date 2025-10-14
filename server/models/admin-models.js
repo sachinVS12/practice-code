@@ -41,35 +41,12 @@ adminschema.pre("save", async function (next) {
  next();   
 });
 
-// pre-save middleware to hash the password before store database
-adminschema.pre("save", async function (next){
-    if(!this.isModified("password")) {
-        return next();
-    }
-    const salt = await bcrypt.gensalt(10);
-    this.password = await bcrypt.hash(this.password, salt);
-    next();
-});
 
 //method to genrate the jwt token for the loggerdin or signedup users
 adminschema.methods.getToken = function (){
     return jwt.sign(
         { id:this._id, name: this.name, email: this.email, role: this.role},
         process.env.JWT_SECRET,
-        {
-            expiresIn: "3d",
-        }
-    );
-};
-
-
-
-
-//method to generate the jwt token for the loggedin or signedup users
-adminschema.methods.getToken = function (){
-    return jwt.sign(
-        { id: this_id, name: this.name, email: this.email, role: this.role},
-        proecess.env.JWT_SECRET,
         {
             expiresIn: "3d",
         }
