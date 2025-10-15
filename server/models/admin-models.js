@@ -2,8 +2,7 @@ const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
-//Define schema
-const adminschema = new mongoosescema(
+const adminschema = new mongooseschema(
     {
         name: {
             type: String,
@@ -13,22 +12,22 @@ const adminschema = new mongoosescema(
             type: String,
             required: [true, "email is required"],
             unique: true,
-            match: [/.+\@.+\..+/, "plase enter the valid email"],
+            match: [/.+\@.+\..+/, "Enter the valid emailid"],
         },
         password: {
             type: String,
-            required: [true, "password is required"],
             select: false,
+            required: [true, "password is required"],
         },
         role: {
             type: String,
-            default: 'employee',
+            default: "employee",
         },
     },
     {
-        timestamps: true,
+        timestamp:true,
     }
-)
+);
 
 // pre-save middleware to hash the password before store database
 adminschema.pre("save", async function (next) {
