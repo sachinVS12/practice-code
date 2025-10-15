@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Login & Signup</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      height: 100vh;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .container {
+      background: #fff;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      width: 300px;
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    .btn {
+      width: 100%;
+      padding: 10px;
+      background: #007BFF;
+      border: none;
+      color: white;
+      font-size: 16px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .toggle-link {
+      text-align: center;
+      margin-top: 10px;
+    }
+
+    .toggle-link a {
+      color: #007BFF;
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    .toggle-link a:hover {
+      text-decoration: underline;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .message {
+      color: green;
+      text-align: center;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Login Form -->
+    <div id="loginForm">
+      <h2>Login</h2>
+      <div class="form-group">
+        <input type="text" id="loginUsername" placeholder="Username" required>
+      </div>
+      <div class="form-group">
+        <input type="password" id="loginPassword" placeholder="Password" required>
+      </div>
+      <button class="btn" onclick="login()">Login</button>
+      <div class="toggle-link">
+        Don't have an account? <a onclick="toggleForm()">Sign Up</a>
+      </div>
+    </div>
+
+    <!-- Signup Form -->
+    <div id="signupForm" class="hidden">
+      <h2>Sign Up</h2>
+      <div class="form-group">
+        <input type="text" id="signupUsername" placeholder="Username" required>
+      </div>
+      <div class="form-group">
+        <input type="password" id="signupPassword" placeholder="Password" required>
+      </div>
+      <button class="btn" onclick="signup()">Sign Up</button>
+      <div class="toggle-link">
+        Already have an account? <a onclick="toggleForm()">Login</a>
+      </div>
+    </div>
+
+    <div id="message" class="message"></div>
+  </div>
+
+  <script>
+    const loginForm = document.getElementById("loginForm");
+    const signupForm = document.getElementById("signupForm");
+    const messageBox = document.getElementById("message");
+
+    let userDB = {}; // Simple in-memory user database
+
+    function toggleForm() {
+      loginForm.classList.toggle("hidden");
+      signupForm.classList.toggle("hidden");
+      messageBox.innerText = "";
+    }
+
+    function signup() {
+      const username = document.getElementById("signupUsername").value.trim();
+      const password = document.getElementById("signupPassword").value;
+
+      if (username === "" || password === "") {
+        messageBox.innerText = "Please fill in all fields.";
+        return;
+      }
+
+      if (userDB[username]) {
+        messageBox.innerText = "Username already exists!";
+        return;
+      }
+
+      userDB[username] = password;
+      messageBox.innerText = "Signup successful! Please log in.";
+      toggleForm();
+    }
+
+    function login() {
+      const username = document.getElementById("loginUsername").value.trim();
+      const password = document.getElementById("loginPassword").value;
+
+      if (userDB[username] && userDB[username] === password) {
+        messageBox.innerText = `Welcome, ${username}!`;
+      } else {
+        messageBox.innerText = "Invalid username or password.";
+      }
+    }
+  </script>
+</body>
+</html>
