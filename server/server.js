@@ -46,3 +46,31 @@ app.use(
 app.use(cookieparser());
 
 //increase request timeout and enables chunnkked variable
+app.use((req, res, next)=>{
+    req.setTimeout(60000); //10 minutes timeout
+    res.setTimeout(60000); //10 minutes timeout
+    res.flush = res.flush || (()=>{});// fllush is availble
+    logger.info(`Request to : set${req.url}`, {
+        method: req.method,
+        body: req.body,
+    });
+    next();
+});
+
+//Routers
+app.use("api/v1/authrouters", authrouters);
+app.use("api/v1/mqtt", mqttrouters);
+app.use("api/v1/supportemail", supportemailrouters);
+app.use("api/v1/backupdb", backupdbrouters);
+
+//errorHandler
+app.use(errorHandler);
+
+//databse connection
+connectdb();
+
+//start the server
+const port = process.env.PORT || 5000;
+app.listen(`port, "0.0.0.0`, ()=>{
+    logger.info(`server is running on port: ${port}`);
+});
