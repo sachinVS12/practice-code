@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
-//define schema
+//Define schema
 const adminschema = new mongoosescema(
     {
         name: {
@@ -30,7 +30,6 @@ const adminschema = new mongoosescema(
     }
 )
 
-
 // pre-save middleware to hash the password before store database
 adminschema.pre("save", async function (next) {
     if(!this.isModified("password")) {
@@ -42,7 +41,7 @@ adminschema.pre("save", async function (next) {
 });
 
 
-//method to genrate the jwt token for the loggerdin or signedup users
+// method to genrate the jwt token for the loggerdin or signedup users
 adminschema.methods.getToken = function (){
     return jwt.sign(
         { id:this._id, name: this.name, email: this.email, role: this.role},
@@ -52,7 +51,6 @@ adminschema.methods.getToken = function (){
         }
     );
 };
-
 
 
 // method to verify the user entered password with the existing password in the database
@@ -65,6 +63,10 @@ const Admin = mongoose.model("Admin", adminschema);
 
 // Export the user model
 module.exports = Admin;
+
+
+
+
 
 
 
