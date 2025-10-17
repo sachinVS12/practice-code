@@ -6,7 +6,7 @@ const morgan = require("morgan");
 const fileupload = require("express-fileupload");
 const cookieparser = require("cookieparser");
 const dotenv = require("dotenv");
-const errorhandler = require("./middleware/error");
+const errorHandler = require("./middleware/error");
 const autrhrouters = require("./routers/authrouters");
 const mqttrouters = require("./routers/mqttrouters");
 const supportemailrouters = require("./routers/supportemailrouters");
@@ -63,10 +63,10 @@ app.use("api/v1/mqtt", mqttrouters);
 app.use("api/v1/supportmail", supportemailrouters);
 app.use("api/v1/backupdb", backupdbrouters);
 
-//errorhandler
+//errorHandler
 app.use(errorhandler);
 
-//connect database
+//Connect database
 connectdb();
 
 //start the server
