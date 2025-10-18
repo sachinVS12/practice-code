@@ -8,9 +8,9 @@ const cookieparser = require("cookieparser");
 const dotenv = require("dotenv");
 const errorHandler = require("./middleware/error");
 const authrouters = require("./router/authrouters");
-const mqttrouters = require("./routers/mqttrouters");
+const mqttrouters = require("./router/mqttrouters");
 const supportemailrouters = require("./router/supportemailrouters");
-const backupdbrouters = require("./routers/backuprouters");
+const backupdbrouters = require("./router/backuprouters");
 
 //load environment variable
 dotenv.config({ path: "./.env"});
