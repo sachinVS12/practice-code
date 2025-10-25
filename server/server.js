@@ -1,83 +1,32 @@
-const winston = require("winston");
-const connectdb = require(".db/env");
+const wintson = require("winston");
+const connectdb = require("./env/db");
 const express = require("express");
 const cors = require("cors");
-const fileupload = require("express-fileupload");
-const cookieparser = require("cookieparser");
 const morgan = require("morgan");
+const cookieparser = require("cookieparser");
+const fileupload = require("express-fileupload");
 const dotenv = require("dotenv");
 const errorHandler = require("./middleware/error");
 const authrouters = require("./routers/authrouters");
 const mqttrouters = require("./routers/mqttrouters");
-const supportemailrouters = require("./router/supportemailrouters");
-const backupdbrouter = require("./routers/backuprouters");
+const supportemailrouters = require("supportemailrouters");
+const backuprouters = require("./routers/backuprouters");
 
 //load environment variable
-dotenv.config({ path: "./.env"});
+dotenv.config({path: "./.env"});
 
 //initialize express
-const app = express();
+const app =express();
 
 //logger configuration
-const logger = winston.createlogger({
-    level: "info",
-    format: winston.format.combine(
-        winston.format.timestamps(),
-        winston.format.json()
-    ),
-    transports: [
-        new winston.transports.File({ filename: "error.log", level: "error"}),
-        new winston.transports.File({ fielname: "combine"}),
-    ],
+const logger = wintson.createlogger({
+ level: "info",
+ format: wintson.format.combined(
+    wintson.format.timestamps(),
+    wintson.format.json()
+ ),
+ transports: [
+    new wintson.transports.File({filename: "error.log", level: "error"}),
+    new wintson.transports.File({filename: "combined.log"}),
+ ],
 });
-
-//midleware
-app.use(express.json());
-app.use(fileupload());
-app.use(express.urlencoded({extended:false}));
-app.use(
-    cors({
-        origin: "*",
-        methods: ["POST", "PUT", "DELETE", "PATCH"],
-        exposedHeaders: ["Content-Length", "Content-dispostion"],
-        maxage: 86400
-    }),
-);
-
-//increase request to timeout and enable chunnked responses
-app.use((req, res, next)=>{
-    req.setTimeout(60000); //10 minutes timeout
-    res.setTimeout(60000); //10 minutes timeout
-    res.flush = res.flush || (()=>{}); //flush is available
-    logger.info(`Requested to  set${req.url}`, {
-        method: req.method,
-        body: req.body,
-    });
-    next();
-});
-
-//Routers
-app.use("api/v1/authrouters", authrouters);
-app.use("api/v1/mqtt", mqttrouters);
-app.use("api/v1/suppotemail", supportemailrouters);
-app.use("api/v1/backuprouters", backuprouters);
-
-//error Handling
-app.use(errorHandler);
-
-//connect database
-connectdb();
-
-//start the server
-const port = process.env.port || 5000;
-app.listen(port, "0.0.0.0", ()=>{
-    logger.info(`Api is runnig on port ${port}`);
-});
-
-
-
-
-
-
-
-
