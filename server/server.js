@@ -30,3 +30,29 @@ const logger = wintson.createlogger({
     new wintson.transports.File({filename: "combined.log"}),
  ],
 });
+
+//middleware
+app.use(express.json());
+app.use(fileupload());
+app.use(express.urlencoded({extended:false}));
+app.use(
+    cors({
+        origin: "*",
+        methods: ["GET", "PUT", "DELETE", "PATCH"],
+        exposeheaders: ["Content-Length", "Content-dispostion"],
+        maxAge: 86400
+    }),
+);
+app.use(cookieparser());
+
+//increase request timeout and enables chunkked responses
+app.use((req, res, next)=>{
+    req.setTimeout(60000); // 10 minutes timeout
+    res.setTimeout(60000); // 1o minutes timeout
+    res.flush = res.flush || (()=>{}); //ensure flush is avaialbel
+    logger.info(`Requsted to set ${req.url}`, {
+        method: req.method,
+        body: req.body,
+    });
+    next();
+});
