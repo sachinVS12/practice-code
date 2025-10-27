@@ -56,3 +56,21 @@ app.use((req, res, next)=>{
     });
     next();
 });
+
+//Routers
+app.use("api/v1/authrouters", authrouters);
+app.use("api/v1/mqtt", mqttrouters);
+app.use("api/v1/supportemail", supportemailrouters);
+app.use("api/v1/backupdb", backuprouters);
+
+//errorHandler
+app.use(errorHandler);
+
+//connect database
+connectdb();
+
+//start the server
+const port = process.env.port || 5000;
+app.listen(port, "0.0.0.0", ()=>{
+    logger.info(`server is running on port ${port}`);
+});
