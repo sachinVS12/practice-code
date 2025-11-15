@@ -12,10 +12,10 @@ const mqttrouters = require("./routers/mqttrouters");
 const supportemail = require("./routers/supprotemailrouters");
 const backdbrouters = require("./routers/backdbrouters");
 
-//load environment variable
+//load Environment variable
 dotenv.config({path: "./.env"});
 
-//initialize express
+//initialize Express
 const app = express();
 
 //Logger configuration
