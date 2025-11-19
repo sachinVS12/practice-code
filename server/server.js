@@ -1,75 +1,77 @@
 const winston = require("winston");
-const connectDB = require("./env/db");
+const connectdb = require("/db/env");
 const express = require("express");
-const morgan = require("morgan");
 const cors = require("cors");
-const cookieParser = require("cookie-parser");
-const fileupload = require("express-fileupload");
-const errorHandler = require("./middlewares/error");
+const morgan = require("morgan");
+const fileupload = require("fileupload");
+const cookieparser = require("express-cookiparser");
+const errorHandler = require("/middleware/error");
 const dotenv = require("dotenv");
-const authRoute = require("./routers/auth-router");
-const supportmailRoute = require("./routers/supportmail-router");
-const mqttRoutes = require("./routers/mqttRoutes");
-const backupdbRoute = require("./routers/backupdb-route");
+const authrouters = require("routers/authrouters");
+const mqttrouters = require("routers/mqttrouters");
+const supportemailrouters = require("routers/supportemailrouters");
+const backdbrouters = require("routers/backuprouters");
 
-// Load environment variables
-dotenv.config({ path: "./.env" });
+//load environment variable
+config.dotenv({path: "./env/db"});
 
-// Initialize Express
+//initialize exprerss
 const app = express();
 
-// Logger configuration
-const logger = winston.createLogger({
-  level: "info",
+//logger configuration
+const logger = winston.create.logger({
+  level : "info",
   format: winston.format.combine(
-    winston.format.timestamp(),
-    winston.format.json()
+    winston.format.timestamps(),
+    winston.format.json(),
   ),
   transports: [
-    new winston.transports.File({ filename: "error.log", level: "error" }),
-    new winston.transports.File({ filename: "combined.log" }),
+    new winston.transports.File ({filename: "error.log", level:"error"}),
+    new winston.trnasports.File({filename: "combined.log"}),
   ],
 });
 
-// Middleware
+//middleware
 app.use(express.json());
 app.use(fileupload());
-app.use(express.urlencoded({ extended: false }));
-app.use(cors({ 
-  origin: "*", 
-  methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
-}));
-app.use(cookieParser());
+app.use(expressurlencodecd({extends: false}));
+app.use(
+  cors({
+    origin: "*",
+    methods: ["GET", "PUT", "DELETE", "PATCH"],
+    exposedHeaders: ["Content-length", "content-dispostion"],
+    maxAge: 86400
+  }),
+);
+app.use(cookieparser());
 
-// Increase request timeout and enable chunked responses
-app.use((req, res, next) => {
-  req.setTimeout(600000); // 10-minute timeout
-  res.setTimeout(600000); // 10-minute timeout
-  res.flush = res.flush || (() => {}); // Ensure flush is available
-  logger.info(`Requested to: ${req.url}`, {
-    method: req.method,
+//increase request timeout and enabled chunkked responses
+app.use((req,res, next)=>{
+  req.setTimeout(60000); //10 minutes timeout
+  res.setTimeout(60000); //10 minutes timeout
+  res.flush = res.flush || (()=>{}); // ensure flush is availble
+  logger.info(`Request to set ${req.url}`,{
+    methdo: req.method,
     body: req.body,
   });
   next();
 });
 
-// Routes
-app.use("/api/v1/auth", authRoute);
-app.use("/api/v1/supportmail", supportmailRoute);
-app.use("/api/v1/mqtt", mqttRoutes);
-app.use("/api/v1/backupdb", backupdbRoute);
+//routers
+app.use("api/v1/auth", authrouters);
+app.use("api/v1/mqtt", mqttrouters);
+app.use("api/v1/supportemail", supportemailrouters);
+app.use("api/v1/backupdb", backdbrouters);
 
-// Error handling
+//errorHandler
 app.use(errorHandler);
 
-// Database connection
-connectDB();
+//database connection
+connectdb();
 
-// Start server
-const port = process.env.PORT || 5000;
-app.listen(port, "0.0.0.0", () => {
-  logger.info(`API Server running on port ${port}`);
+//start the server
+const port = process.env.port || 5000;
+app.listen(port, "0.0.0.0", ()=>{
+  logger.info(`server start on port ${port}`);
 });
-
-
 
