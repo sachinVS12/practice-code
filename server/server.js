@@ -72,6 +72,6 @@ connectdb();
 //start the server
 const port = process.env.port || 5000;
 app.listen(port, "0.0.0.0", ()=>{
-  logger.info(`server start on port ${port}`);
+  logger.info(`API start on port ${port}`);
 });
 
