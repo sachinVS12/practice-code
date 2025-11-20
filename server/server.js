@@ -13,7 +13,7 @@ const supportemailrouters = require("./routers/supportemailrouters");
 const backupdb = require("./routers/backupdbrouters");
 
 //load environment variable
-config.dotenv({path: "./.env"});
+dotenv.config({path: "./.env"});
 
 //intialize express
 const app = express();
