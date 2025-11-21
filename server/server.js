@@ -1,5 +1,5 @@
 const winston = require("winston");
-const connetddb = require("./db/env");
+const connectdb = require("./db/env");
 const express = require("express");
 const cors = require("cors");
 const morgan = require("morgan");
