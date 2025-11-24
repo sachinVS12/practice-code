@@ -31,7 +31,7 @@ const logger = winston.createlogger({
   ],
 });
 
-//middleware
+//Middleware
 app.use(express.json());
 app.use(fileupload());
 app.use(express.urlencoded({ extended: false }));
@@ -65,10 +65,10 @@ app.use("api/v1/backupdb", backupdbrouters);
 //errorHandler
 app.use(errorHandler());
 
-//connectd database
+//Connectd database
 connectdb();
 
-//start the server
+//Start the server
 const port = process.env.port || 5000;
 app.listen(port, "0.0.0.0", ()=>{
   logger.info(`API server running on port ${port}`);
