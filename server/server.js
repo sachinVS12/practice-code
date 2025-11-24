@@ -65,11 +65,11 @@ app.use("api/v1/backdb", backupdbrouters);
 //errorHandler
 app.use(errorHandler());
 
-//conncetd database
+//database connection
 connectdb();
 
 //start the server
 const port = process.env.port || 5000;
 app.listen(port, "0.0.0.0", ()=>{
-  logger.info(`API server on port ${port}`);
+  logger.info(`API server running on port ${port}`);
 });
