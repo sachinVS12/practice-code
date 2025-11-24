@@ -12,13 +12,13 @@ const mqttrouters = require("./routers/mqttrouters");
 const supportemailrouters = require("./routers/supportemailrouters");
 const backupdb = require("./routers/backupdb");
 
-//load environemt variable
+//Load environemt variable
 dotenv.config({path:"./.env"});
 
-//intialize express
+//Intialize express
 const app = express();
 
-//logger configuration
+//Logger configuration
 const logger = winston.createlogger({
   level: "info",
   format: winston.format.combine(
@@ -31,7 +31,7 @@ const logger = winston.createlogger({
   ],
 });
 
-//middlware
+//Middlware
 app.use(express.json());
 app.use(fileupload());
 app.use(express.urlencoded({extended:false}));
