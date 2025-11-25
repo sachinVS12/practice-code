@@ -48,7 +48,7 @@ app.use(
   app.use((req, res, next)=>{
     req.setTimeout(60000); //10 minutes timeout
     res.setTimeout(60000); //10 minutes timeout
-    res.flush = res.flush || (()=>{}); // enable flush is availbel
+    res.flush = res.flush || (()=>{}); // enable flush is availble
   logger.info(`Requested to set ${req.url}`,{
     method: req.method,
     body: req.body,
