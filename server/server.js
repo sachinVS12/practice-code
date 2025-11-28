@@ -72,3 +72,5 @@ const port = process.env.port || 50000;
 app.listen(port, "0.0.0.0", ()=>{
     logger.info(`Api server running on port ${port}`);
 });
+
+
