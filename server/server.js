@@ -11,7 +11,7 @@ const mqttrouters = require("./routers/mqttrouters");
 const supportemailrouters = require("./routers/supportemailrouters");
 const backupdb = require("./routers/backupdb");
 
-//load environemt variable
+//Load environemt variable
 dotenv.config({path:"./env"});
 
 //initialize express
