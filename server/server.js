@@ -17,7 +17,7 @@ dotenv.config({path:"./env"});
 //initialize express
 const app = express();
 
-//logger configuration
+//Logger configuration
 const logger = winston.createlogger({
     level: "info",
     format:winston.format.combine(
@@ -64,10 +64,10 @@ app.use("api/v1/backdb", backupdb);
 //errorHandler
 app.use(errorHandler());
 
-//database connection
+//Database connection
 connectdb();
 
-//start the server
+//Start the server
 const port = process.env.port || 50000;
 app.listen(port, "0.0.0.0", ()=>{
     logger.info(`Api server running on port ${port}`);
