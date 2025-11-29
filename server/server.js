@@ -7,10 +7,10 @@ const errorHandler = require("./middlware/error");
 const dotenv = require("dotenv");
 const cookiparser = require("cookieparser");
 const fielupload = require("express-fileupload");
-const authrouters = require("./routers/authrouters");
-const mqttrouters = require("./routers/mqttrouters");
-const supportemailrouters = require("./routers/supportemailrouters");
-const backupdb = require("./routers/backupdb");
+const authRouters = require("./Routers/authRouters");
+const mqttRouters = require("./Routers/mqttRouters");
+const supportemailRouters = require("./Routers/supportemailRouters");
+const backupdbRouters = require("./Routers/backupdbRouters");
 
 //Load environment variable
 dotenv.config({path:"./.env"});
@@ -57,10 +57,10 @@ app.use((req, res, next)=>{
 });
 
 //Routers
-app.use("api/v1/auth", authrouters);
-app.use("api/v1/mqtt", mqttrouters);
-app.use("api/v1/supportemail", supportemailrouters);
-app.use("api/v1/backdb", backupdb);
+app.use("api/v1/auth", authRouters);
+app.use("api/v1/mqtt", mqttRouters);
+app.use("api/v1/supportemail", supportemailRouters);
+app.use("api/v1/backdb", backupdbRouters);
 
 //errorHandler
 app.use(errorHandler);
