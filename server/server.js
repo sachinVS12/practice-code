@@ -7,10 +7,10 @@ const cookieparser = require("cookieparser");
 const fileupload = require("express-fileupload");
 const errorHandler = require("./middleware/error");
 const dotenv = require("dotenv");
-const authrouters = require("./routers/authrouters");
-const mqttrouters = require('./routers/mqttrouters');
-const supportemailrouters = require("./routers/supportemailrouters");
-const backupdbrouters = require("./routers/backupdbrouters");
+const authRouters = require("./Routers/authRouters");
+const mqttRouters = require('./Routers/mqttRouters');
+const supportemailRouters = require("./Routers/supportemailRouters");
+const backupdbRouters = require("./Routers/backupdbRouters");
 
 //Load environment variable
 dotenv.config({path: "./.env"});
