@@ -58,10 +58,10 @@ app.use((req, res, next)=>{
 });
 
 //Routers
-app.use("api/v1/auth", authrouters);
-app.use("api/v1/mqtt", mqttrouters);
-app.use('api/v1/supportemail', supportemailrouters);
-app.use('api/v1/backupdb', backupdbrouters);
+app.use("api/v1/auth", authRouters);
+app.use("api/v1/mqtt", mqttRouters);
+app.use('api/v1/supportemail', supportemailRouters);
+app.use('api/v1/backupdb', backupdbRouters);
 
 //errorHandler
 app.use(errorHandler());
